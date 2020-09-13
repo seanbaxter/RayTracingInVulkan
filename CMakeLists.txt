@@ -2,73 +2,97 @@ cmake_minimum_required(VERSION 3.10)
 
 project(RayTracingInVulkan)
 
-# On Linux, default to Release if not specified.
-if (UNIX AND NOT CMAKE_BUILD_TYPE)
-	set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Specifies the build type on single-configuration generators" FORCE)
-endif ()
-
-set(CMAKE_DEBUG_POSTFIX d)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
-
-foreach (OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
-    string(TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${PROJECT_BINARY_DIR}/bin)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${PROJECT_BINARY_DIR}/bin)
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${PROJECT_BINARY_DIR}/lib)
-endforeach()
-
-if (WIN32)
-
-	add_definitions(-DUNICODE -D_UNICODE)
-	add_definitions(-DWIN32_LEAN_AND_MEAN)
-	
-	foreach (flag_var CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
-		if (${flag_var} MATCHES "/MD")
-			string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
-		endif()
-	endforeach()
-	
-	add_compile_options("/std:c++17")
-	add_compile_options("/MP")
-	
-endif()
-
-if (UNIX)
-	
-	add_definitions(-DUNIX)
 	add_compile_options("-std=c++17")
 	add_compile_options("-Wall")
 	add_compile_options("-fvisibility=hidden")
-	
-	find_package(Backtrace REQUIRED)
 
-endif ()
+include_directories(src src/imgui)
+
 
 find_package(Boost REQUIRED COMPONENTS exception program_options) 
 find_package(glfw3 REQUIRED)
 find_package(glm CONFIG REQUIRED)
-find_package(imgui CONFIG REQUIRED)
+# find_package(imgui CONFIG REQUIRED)
 find_package(tinyobjloader CONFIG REQUIRED)
 find_package(Vulkan REQUIRED)
 
-IF (NOT Vulkan_FOUND)
-    message(FATAL_ERROR "Could not find Vulkan library!")
-ELSE()
-    message(STATUS ${Vulkan_LIBRARY})
-ENDIF()
+set(SOURCE_FILES
+  src/main.cpp
+  src/ModelViewController.cpp
+  src/Options.cpp
+  src/RayTracer.cpp
+  src/SceneList.cpp
+  src/UserInterface.cpp
 
-find_program(Vulkan_GLSLANG_VALIDATOR 
-	NAMES glslangValidator 
-	HINTS ENV VULKAN_SDK 
-	PATH_SUFFIXES bin)
-	
-if (NOT Vulkan_GLSLANG_VALIDATOR)
-    message(FATAL_ERROR "glslangValidator not found!")
-endif()
+  src/Assets/CornellBox.cpp
+  # src/Assets/Model.cpp
+  src/Assets/Scene.cpp
+  src/Assets/Texture.cpp
+  src/Assets/TextureImage.cpp
+  src/Assets/UniformBuffer.cpp
 
-set(MAIN_PROJECT "RayTracer")
-add_subdirectory(assets)
-add_subdirectory(src)
-set_property (DIRECTORY PROPERTY VS_STARTUP_PROJECT ${MAIN_PROJECT})
+  src/Utilities/Console.cpp
+  src/Utilities/StbImage.cpp
+
+  src/Vulkan/Application.cpp
+  src/Vulkan/Buffer.cpp
+  src/Vulkan/CommandBuffers.cpp
+  src/Vulkan/CommandPool.cpp
+  src/Vulkan/DebugUtilsMessenger.cpp
+  src/Vulkan/DepthBuffer.cpp
+  src/Vulkan/DescriptorPool.cpp
+  src/Vulkan/DescriptorSetLayout.cpp
+  src/Vulkan/DescriptorSetManager.cpp
+  src/Vulkan/DescriptorSets.cpp
+  src/Vulkan/Device.cpp
+  src/Vulkan/DeviceMemory.cpp
+  src/Vulkan/Fence.cpp
+  src/Vulkan/FrameBuffer.cpp
+  src/Vulkan/GraphicsPipeline.cpp
+  src/Vulkan/Image.cpp
+  src/Vulkan/ImageView.cpp
+  src/Vulkan/Instance.cpp
+  src/Vulkan/PipelineLayout.cpp
+  src/Vulkan/RenderPass.cpp
+  src/Vulkan/Sampler.cpp
+  src/Vulkan/Semaphore.cpp
+  src/Vulkan/ShaderModule.cpp
+  src/Vulkan/Strings.cpp
+  src/Vulkan/Surface.cpp
+  src/Vulkan/SwapChain.cpp
+  src/Vulkan/Vulkan.cpp
+  src/Vulkan/Window.cpp
+
+  src/Vulkan/RayTracing/AccelerationStructure.cpp
+  src/Vulkan/RayTracing/AccelerationStructure.hpp
+  src/Vulkan/RayTracing/Application.cpp
+  src/Vulkan/RayTracing/Application.hpp
+  src/Vulkan/RayTracing/BottomLevelAccelerationStructure.cpp
+  src/Vulkan/RayTracing/BottomLevelAccelerationStructure.hpp
+  src/Vulkan/RayTracing/DeviceProcedures.cpp
+  src/Vulkan/RayTracing/DeviceProcedures.hpp
+  src/Vulkan/RayTracing/RayTracingPipeline.cpp
+  src/Vulkan/RayTracing/RayTracingPipeline.hpp
+  src/Vulkan/RayTracing/RayTracingProperties.cpp
+  src/Vulkan/RayTracing/RayTracingProperties.hpp
+  src/Vulkan/RayTracing/ShaderBindingTable.cpp
+  src/Vulkan/RayTracing/ShaderBindingTable.hpp
+  src/Vulkan/RayTracing/TopLevelAccelerationStructure.cpp
+  src/Vulkan/RayTracing/TopLevelAccelerationStructure.hpp
+
+  src/imgui/imgui.cpp
+  src/imgui/imgui_draw.cpp
+  src/imgui/imgui_widgets.cpp
+  src/imgui/examples/imgui_impl_glfw.cpp
+  src/imgui/examples/imgui_impl_vulkan.cpp
+
+)
+
+add_executable(raytracer ${SOURCE_FILES})
+
+target_link_libraries(raytracer 
+  dl
+  glfw
+  vulkan
+  boost_program_options
+)
