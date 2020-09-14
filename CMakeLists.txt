@@ -1,10 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(RayTracingInVulkan)
+	add_compile_options("-stat")
 
-	add_compile_options("-std=c++17")
-	add_compile_options("-Wall")
-	add_compile_options("-fvisibility=hidden")
 
 include_directories(src src/imgui)
 
