@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(RayTracingInVulkan)
-	add_compile_options("-stat")
-
+add_link_options("-no-demangle")
 
 include_directories(src src/imgui)
 
@@ -23,7 +22,7 @@ set(SOURCE_FILES
   src/UserInterface.cpp
 
   src/Assets/CornellBox.cpp
-  # src/Assets/Model.cpp
+  src/Assets/Model.cpp
   src/Assets/Scene.cpp
   src/Assets/Texture.cpp
   src/Assets/TextureImage.cpp
@@ -62,21 +61,13 @@ set(SOURCE_FILES
   src/Vulkan/Window.cpp
 
   src/Vulkan/RayTracing/AccelerationStructure.cpp
-  src/Vulkan/RayTracing/AccelerationStructure.hpp
   src/Vulkan/RayTracing/Application.cpp
-  src/Vulkan/RayTracing/Application.hpp
   src/Vulkan/RayTracing/BottomLevelAccelerationStructure.cpp
-  src/Vulkan/RayTracing/BottomLevelAccelerationStructure.hpp
   src/Vulkan/RayTracing/DeviceProcedures.cpp
-  src/Vulkan/RayTracing/DeviceProcedures.hpp
   src/Vulkan/RayTracing/RayTracingPipeline.cpp
-  src/Vulkan/RayTracing/RayTracingPipeline.hpp
   src/Vulkan/RayTracing/RayTracingProperties.cpp
-  src/Vulkan/RayTracing/RayTracingProperties.hpp
   src/Vulkan/RayTracing/ShaderBindingTable.cpp
-  src/Vulkan/RayTracing/ShaderBindingTable.hpp
   src/Vulkan/RayTracing/TopLevelAccelerationStructure.cpp
-  src/Vulkan/RayTracing/TopLevelAccelerationStructure.hpp
 
   src/imgui/imgui.cpp
   src/imgui/imgui_draw.cpp
@@ -93,4 +84,6 @@ target_link_libraries(raytracer
   glfw
   vulkan
   boost_program_options
+  tinyobjloader
+  stdc++fs
 )

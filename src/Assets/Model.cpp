@@ -7,6 +7,8 @@
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtc/matrix_inverse.hpp>
+
+#define GLM_HAS_CXX11_STL 1
 #include <glm/gtx/hash.hpp>
 
 #include <tiny_obj_loader.h>

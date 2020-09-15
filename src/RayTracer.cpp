@@ -224,7 +224,7 @@ void RayTracer::OnScroll(const double xoffset, const double yoffset)
 	}
 
 	const auto prevFov = userSettings_.FieldOfView;
-	userSettings_.FieldOfView = std::clamp(
+	userSettings_.FieldOfView = glm::clamp(
 		static_cast<float>(prevFov - yoffset),
 		UserSettings::FieldOfViewMinValue,
 		UserSettings::FieldOfViewMaxValue);
