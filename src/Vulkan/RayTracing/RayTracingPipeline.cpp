@@ -143,19 +143,19 @@ RayTracingPipeline::RayTracingPipeline(
 	pipelineLayout_.reset(new class PipelineLayout(device, descriptorSetManager_->DescriptorSetLayout()));
 
 	// Load shaders.
-	const ShaderModule rayGenShader(device, "../assets/shaders/RayTracing.rgen.spv");
-	const ShaderModule missShader(device, "../assets/shaders/RayTracing.rmiss.spv");
-	const ShaderModule closestHitShader(device, "../assets/shaders/RayTracing.rchit.spv");
-	const ShaderModule proceduralClosestHitShader(device, "../assets/shaders/RayTracing.Procedural.rchit.spv");
-	const ShaderModule proceduralIntersectionShader(device, "../assets/shaders/RayTracing.Procedural.rint.spv");
+	const ShaderModule rayGenShader(device, "../assets/shaders/circle/raytracing.spv");
+	const ShaderModule missShader(device, "../assets/shaders/circle/raytracing.spv");
+	const ShaderModule closestHitShader(device, "../assets/shaders/circle/raytracing.spv");
+	const ShaderModule proceduralClosestHitShader(device, "../assets/shaders/circle/raytracing.spv");
+	const ShaderModule proceduralIntersectionShader(device, "../assets/shaders/circle/rint.sphere.spv");
 
 	std::vector<VkPipelineShaderStageCreateInfo> shaderStages =
 	{
-		rayGenShader.CreateShaderStage(VK_SHADER_STAGE_RAYGEN_BIT_NV),
-		missShader.CreateShaderStage(VK_SHADER_STAGE_MISS_BIT_NV),
-		closestHitShader.CreateShaderStage(VK_SHADER_STAGE_CLOSEST_HIT_BIT_NV),
-		proceduralClosestHitShader.CreateShaderStage(VK_SHADER_STAGE_CLOSEST_HIT_BIT_NV),
-		proceduralIntersectionShader.CreateShaderStage(VK_SHADER_STAGE_INTERSECTION_BIT_NV)
+		rayGenShader.CreateShaderStage(VK_SHADER_STAGE_RAYGEN_BIT_NV, "_Z9rgen_mainv"),
+		missShader.CreateShaderStage(VK_SHADER_STAGE_MISS_BIT_NV, "_Z10rmiss_mainv"),
+		closestHitShader.CreateShaderStage(VK_SHADER_STAGE_CLOSEST_HIT_BIT_NV, "_Z14rchit_trianglev"),
+		proceduralClosestHitShader.CreateShaderStage(VK_SHADER_STAGE_CLOSEST_HIT_BIT_NV, "_Z12rchit_spherev"),
+		proceduralIntersectionShader.CreateShaderStage(VK_SHADER_STAGE_INTERSECTION_BIT_NV, "_Z11rint_spherev")
 	};
 
 	// Shader groups

@@ -13,7 +13,7 @@ Instance::Instance(const class Window& window, const std::vector<const char*>& v
 	validationLayers_(validationLayers)
 {
 	// Check the minimum version.
-	const uint32_t version = VK_API_VERSION_1_1;
+	const uint32_t version = VK_API_VERSION_1_2;
 
 	CheckVulkanMinimumVersion(version);
 

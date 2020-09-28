@@ -69,5 +69,4 @@ namespace Assets
 		std::vector<VkImageView> textureImageViewHandles_;
 		std::vector<VkSampler> textureSamplerHandles_;
 	};
-
 }

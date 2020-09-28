@@ -46,12 +46,12 @@ vec2 RandomInUnitDisk(inout uint seed)
 
 vec3 RandomInUnitSphere(inout uint seed)
 {
-	for (;;)
-	{
-		const vec3 p = 2 * vec3(RandomFloat(seed), RandomFloat(seed), RandomFloat(seed)) - 1;
-		if (dot(p, p) < 1)
-		{
-			return p;
-		}
-	}
+  float u = RandomFloat(seed);
+  float v = RandomFloat(seed);
+
+  float theta = 2 * 3.14159 * RandomFloat(seed);
+  float phi = 2 * v - 1;
+
+  float x = sqrt(1 - u * u);
+  return vec3(x * cos(theta), x * sin(theta), u);
 }

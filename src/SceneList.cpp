@@ -137,7 +137,7 @@ SceneAssets SceneList::PlanetsInOneWeekend(CameraInitialSate& camera)
 
 			if (length(center - vec3(4, 0.2f, 0)) > 0.9)
 			{
-				if (chooseMat < 0.8f) // Diffuse
+				if (chooseMat < 0.6f) // Diffuse
 				{
 					models.push_back(Model::CreateSphere(center, 0.2f, Material::Lambertian(vec3(
 						random() * random(),
@@ -145,7 +145,7 @@ SceneAssets SceneList::PlanetsInOneWeekend(CameraInitialSate& camera)
 						random() * random())),
 						isProc));
 				}
-				else if (chooseMat < 0.95f) // Metal
+				else if (chooseMat < 0.9f) // Metal
 				{
 					models.push_back(Model::CreateSphere(center, 0.2f, Material::Metallic(
 						vec3(0.5f * (1 + random()), 0.5f * (1 + random()), 0.5f * (1 + random())),

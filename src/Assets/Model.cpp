@@ -306,11 +306,15 @@ Model Model::CreateSphere(const vec3& center, float radius, const Material& mate
 		}
 	}
 
+	// Workaround for Circle bug involving exception handlers around 
+	// new-expressions. 
+	auto* proc = isProcedural ? new Sphere(center, radius) : nullptr;
+
 	return Model(
 		std::move(vertices),
 		std::move(indices),
 		std::vector<Material>{material},
-		isProcedural ? new Sphere(center, radius) : nullptr);
+		proc);
 }
 
 void Model::SetMaterial(const Material& material)

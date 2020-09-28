@@ -20,7 +20,8 @@ namespace Vulkan
 
 		const class Device& Device() const { return device_; }
 
-		VkPipelineShaderStageCreateInfo CreateShaderStage(VkShaderStageFlagBits stage) const;
+		VkPipelineShaderStageCreateInfo CreateShaderStage(VkShaderStageFlagBits stage,
+			const char* name = nullptr) const;
 
 	private:
 

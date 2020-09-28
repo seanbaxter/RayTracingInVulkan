@@ -163,13 +163,13 @@ GraphicsPipeline::GraphicsPipeline(
 	renderPass_.reset(new class RenderPass(swapChain, depthBuffer, true, true));
 
 	// Load shaders.
-	const ShaderModule vertShader(device, "../assets/shaders/Graphics.vert.spv");
-	const ShaderModule fragShader(device, "../assets/shaders/Graphics.frag.spv");
+	const ShaderModule vertShader(device, "../assets/shaders/circle/raster.spv");
+	const ShaderModule fragShader(device, "../assets/shaders/circle/raster.spv");
 
 	VkPipelineShaderStageCreateInfo shaderStages[] =
 	{
-		vertShader.CreateShaderStage(VK_SHADER_STAGE_VERTEX_BIT),
-		fragShader.CreateShaderStage(VK_SHADER_STAGE_FRAGMENT_BIT)
+		vertShader.CreateShaderStage(VK_SHADER_STAGE_VERTEX_BIT, "_Z9vert_mainv"),
+		fragShader.CreateShaderStage(VK_SHADER_STAGE_FRAGMENT_BIT, "_Z9frag_mainv")
 	};
 
 	// Create graphic pipeline
