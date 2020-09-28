@@ -192,7 +192,6 @@ void rgen_main() {
 
       ray_color *= hit_color;
 
-      // TODO: This causes PHI dominance error.
       if(t < 0 || !is_scattered)
         break;
 
