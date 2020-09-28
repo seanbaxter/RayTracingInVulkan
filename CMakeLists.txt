@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(RayTracingInVulkan)
-add_link_options("-no-demangle")
+# add_link_options("-no-demangle")
 
 include_directories(src src/imgui)
 
+SET(CMAKE_CXX_STANDARD 17)
 
 find_package(Boost REQUIRED COMPONENTS exception program_options) 
 find_package(glfw3 REQUIRED)
