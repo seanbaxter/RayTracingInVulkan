@@ -31,13 +31,14 @@ ShaderModule::~ShaderModule()
 	}
 }
 
-VkPipelineShaderStageCreateInfo ShaderModule::CreateShaderStage(VkShaderStageFlagBits stage) const
+VkPipelineShaderStageCreateInfo ShaderModule::CreateShaderStage(VkShaderStageFlagBits stage, 
+	const char* name) const
 {
 	VkPipelineShaderStageCreateInfo createInfo = {};
 	createInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
 	createInfo.stage = stage;
 	createInfo.module = shaderModule_;
-	createInfo.pName = "main";
+	createInfo.pName = name ? name : "main";
 
 	return createInfo;
 }
