@@ -142,20 +142,16 @@ RayTracingPipeline::RayTracingPipeline(
 
 	pipelineLayout_.reset(new class PipelineLayout(device, descriptorSetManager_->DescriptorSetLayout()));
 
-	// Load shaders.
-	const ShaderModule rayGenShader(device, "../assets/shaders/circle/link.spv");
-	const ShaderModule missShader(device, "../assets/shaders/circle/link.spv");
-	const ShaderModule closestHitShader(device, "../assets/shaders/circle/link.spv");
-	const ShaderModule proceduralClosestHitShader(device, "../assets/shaders/circle/link.spv");
-	const ShaderModule proceduralIntersectionShader(device, "../assets/shaders/circle/rint.sphere.spv");
+	// Load the Circle-compiled SPIR-V shaders.
+	ShadersBinary shaders = GetShaders();
+	ShaderModule module(device, shaders.module_data, shaders.module_size);
 
-	std::vector<VkPipelineShaderStageCreateInfo> shaderStages =
-	{
-		rayGenShader.CreateShaderStage(VK_SHADER_STAGE_RAYGEN_BIT_NV, "_Z9rgen_mainv"),
-		missShader.CreateShaderStage(VK_SHADER_STAGE_MISS_BIT_NV, "_Z10rmiss_mainv"),
-		closestHitShader.CreateShaderStage(VK_SHADER_STAGE_CLOSEST_HIT_BIT_NV, "_Z14rchit_trianglev"),
-		proceduralClosestHitShader.CreateShaderStage(VK_SHADER_STAGE_CLOSEST_HIT_BIT_NV, "_Z12rchit_spherev"),
-		proceduralIntersectionShader.CreateShaderStage(VK_SHADER_STAGE_INTERSECTION_BIT_NV, "_Z11rint_spherev")
+	std::vector<VkPipelineShaderStageCreateInfo> shaderStages {
+		module.CreateShaderStage(VK_SHADER_STAGE_RAYGEN_BIT_NV, shaders.rgen),
+		module.CreateShaderStage(VK_SHADER_STAGE_MISS_BIT_NV, shaders.rmiss),
+		module.CreateShaderStage(VK_SHADER_STAGE_CLOSEST_HIT_BIT_NV, shaders.rchit_triangle),
+		module.CreateShaderStage(VK_SHADER_STAGE_CLOSEST_HIT_BIT_NV, shaders.rchit_sphere),
+		module.CreateShaderStage(VK_SHADER_STAGE_INTERSECTION_BIT_NV, shaders.rint_sphere)
 	};
 
 	// Shader groups

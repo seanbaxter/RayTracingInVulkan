@@ -55,6 +55,7 @@ set(SOURCE_FILES
   src/Vulkan/Sampler.cpp
   src/Vulkan/Semaphore.cpp
   src/Vulkan/ShaderModule.cpp
+  src/Vulkan/Shaders.cpp
   src/Vulkan/Strings.cpp
   src/Vulkan/Surface.cpp
   src/Vulkan/SwapChain.cpp
@@ -68,6 +69,7 @@ set(SOURCE_FILES
   src/Vulkan/RayTracing/RayTracingPipeline.cpp
   src/Vulkan/RayTracing/RayTracingProperties.cpp
   src/Vulkan/RayTracing/ShaderBindingTable.cpp
+  src/Vulkan/RayTracing/Shaders.cpp
   src/Vulkan/RayTracing/TopLevelAccelerationStructure.cpp
 
   src/imgui/imgui.cpp
@@ -76,6 +78,12 @@ set(SOURCE_FILES
   src/imgui/examples/imgui_impl_glfw.cpp
   src/imgui/examples/imgui_impl_vulkan.cpp
 
+)
+
+set_source_files_properties(
+  src/Vulkan/Shaders.cpp 
+  src/Vulkan/RayTracing/Shaders.cpp 
+  PROPERTIES COMPILE_FLAGS -shader
 )
 
 add_executable(raytracer ${SOURCE_FILES})

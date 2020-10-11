@@ -16,6 +16,7 @@ namespace Vulkan
 
 		ShaderModule(const Device& device, const std::string& filename);
 		ShaderModule(const Device& device, const std::vector<char>& code);
+		ShaderModule(const Device& device, const void* data, size_t size);
 		~ShaderModule();
 
 		const class Device& Device() const { return device_; }

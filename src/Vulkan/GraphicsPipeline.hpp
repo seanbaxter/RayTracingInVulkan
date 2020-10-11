@@ -17,6 +17,14 @@ namespace Vulkan
 	class RenderPass;
 	class SwapChain;
 
+	struct ShadersBinary {
+		const void* module_data;
+		size_t module_size;
+
+		const char* vert;
+		const char* frag;
+	};
+
 	class GraphicsPipeline final
 	{
 	public:
@@ -30,6 +38,8 @@ namespace Vulkan
 			const Assets::Scene& scene,
 			bool isWireFrame);
 		~GraphicsPipeline();
+
+		ShadersBinary GetShaders() const;
 
 		VkDescriptorSet DescriptorSet(uint32_t index) const;
 		bool IsWireFrame() const { return isWireFrame_; }

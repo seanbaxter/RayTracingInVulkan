@@ -11,12 +11,17 @@ ShaderModule::ShaderModule(const class Device& device, const std::string& filena
 }
 
 ShaderModule::ShaderModule(const class Device& device, const std::vector<char>& code) :
-	device_(device)
+	ShaderModule(device, code.data(), code.size())
 {
+}
+
+ShaderModule::ShaderModule(const class Device& device, const void* data, size_t size) : 
+	device_(device) {
+
 	VkShaderModuleCreateInfo createInfo = {};
 	createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-	createInfo.codeSize = code.size();
-	createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
+	createInfo.codeSize = size;
+	createInfo.pCode = reinterpret_cast<const uint32_t*>(data);
 
 	Check(vkCreateShaderModule(device.Handle(), &createInfo, nullptr, &shaderModule_),
 		"create shader module");
