@@ -166,8 +166,7 @@ GraphicsPipeline::GraphicsPipeline(
 	ShadersBinary shaders = GetShaders();
 	ShaderModule module(device, shaders.module_data, shaders.module_size);
 
-	VkPipelineShaderStageCreateInfo shaderStages[] =
-	{
+	VkPipelineShaderStageCreateInfo shaderStages[] {
 		module.CreateShaderStage(VK_SHADER_STAGE_VERTEX_BIT, shaders.vert),
 		module.CreateShaderStage(VK_SHADER_STAGE_FRAGMENT_BIT, shaders.frag)
 	};

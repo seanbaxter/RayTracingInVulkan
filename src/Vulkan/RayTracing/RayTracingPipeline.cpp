@@ -146,7 +146,7 @@ RayTracingPipeline::RayTracingPipeline(
 	ShadersBinary shaders = GetShaders();
 	ShaderModule module(device, shaders.module_data, shaders.module_size);
 
-	std::vector<VkPipelineShaderStageCreateInfo> shaderStages {
+	VkPipelineShaderStageCreateInfo shaderStages[] {
 		module.CreateShaderStage(VK_SHADER_STAGE_RAYGEN_BIT_NV, shaders.rgen),
 		module.CreateShaderStage(VK_SHADER_STAGE_MISS_BIT_NV, shaders.rmiss),
 		module.CreateShaderStage(VK_SHADER_STAGE_CLOSEST_HIT_BIT_NV, shaders.rchit_triangle),
@@ -195,8 +195,7 @@ RayTracingPipeline::RayTracingPipeline(
 	proceduralHitGroupInfo.intersectionShader = 4;
 	proceduralHitGroupIndex_ = 3;
 
-	std::vector<VkRayTracingShaderGroupCreateInfoNV> groups =
-	{
+	VkRayTracingShaderGroupCreateInfoNV groups[] {
 		rayGenGroupInfo, 
 		missGroupInfo, 
 		triangleHitGroupInfo, 
@@ -208,10 +207,10 @@ RayTracingPipeline::RayTracingPipeline(
 	pipelineInfo.sType = VK_STRUCTURE_TYPE_RAY_TRACING_PIPELINE_CREATE_INFO_NV;
 	pipelineInfo.pNext = nullptr;
 	pipelineInfo.flags = 0;
-	pipelineInfo.stageCount = static_cast<uint32_t>(shaderStages.size());
-	pipelineInfo.pStages = shaderStages.data();
-	pipelineInfo.groupCount = static_cast<uint32_t>(groups.size());
-	pipelineInfo.pGroups = groups.data();
+	pipelineInfo.stageCount = 5;
+	pipelineInfo.pStages = shaderStages;
+	pipelineInfo.groupCount = 4;
+	pipelineInfo.pGroups = groups;
 	pipelineInfo.maxRecursionDepth = 1;
 	pipelineInfo.layout = pipelineLayout_->Handle();
 	pipelineInfo.basePipelineHandle = nullptr;
