@@ -67,21 +67,25 @@ inline float RandomFloat(uint& seed) {
   return *(const float*)&x - 1;
 }
 
+inline vec3 RandomOnUnitSphere(uint& seed) {
+  float theta = 2 * M_PIf32 * RandomFloat(seed);
+  float y = 2 * RandomFloat(seed) - 1;
+  float zx = sqrt(1 - y * y);
+  return vec3(zx * cos(theta), y, zx * sin(theta));
+}
+
+inline vec3 RandomInUnitSphere(uint& seed) {
+  float r = sqrt(RandomFloat(seed));
+  return r * RandomOnUnitSphere(seed);
+}
+
+
 inline vec2 RandomInUnitDisk(uint& seed) {
   // Get a random angle and magnitude.
   float a = 2 * M_PIf32 * RandomFloat(seed);
   float r = sqrt(RandomFloat(seed));
 
   return vec2(r * cos(a), r * sin(a));
-}
-
-inline vec3 RandomInUnitSphere(uint& seed) {
-  float theta = 2 * M_PIf32 * RandomFloat(seed);
-  float phi = M_PIf32 * RandomFloat(seed) - M_PIf32 / 2;
-  float r = sqrt(RandomFloat(seed));
-
-  float c = cos(phi);
-  return r * vec3(cos(phi) * sin(theta), cos(phi) * cos(theta), sin(phi));
 }
 
 enum binding_t {
