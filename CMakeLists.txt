@@ -75,8 +75,8 @@ set(SOURCE_FILES
   src/imgui/imgui.cpp
   src/imgui/imgui_draw.cpp
   src/imgui/imgui_widgets.cpp
-  src/imgui/examples/imgui_impl_glfw.cpp
-  src/imgui/examples/imgui_impl_vulkan.cpp
+  src/imgui/backends/imgui_impl_glfw.cpp
+  src/imgui/backends/imgui_impl_vulkan.cpp
 
 )
 
