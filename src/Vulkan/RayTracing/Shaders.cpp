@@ -116,41 +116,16 @@ image2D OutputImage;
 [[using spirv: uniform, binding(binding_ubo)]]
 UniformBufferObject ubo;
 
-// binding 4
-[[using spirv: buffer, readonly, binding(binding_vertices)]]
-float Vertices[];
-
 struct vertex_t {
   vec3 pos;
   vec3 normal;
-  vec2 texcoord;
+  float u, v;
   int material;
 };
 
-inline vertex_t UnpackVertex(int index) {
-  vertex_t v;
-
-  int offset = 9 * index;
-  v.pos = vec3(
-    Vertices[offset + 0], 
-    Vertices[offset + 1], 
-    Vertices[offset + 2]
-  );
-  v.normal = vec3(
-    Vertices[offset + 3],
-    Vertices[offset + 4],
-    Vertices[offset + 5]
-  );
-  v.texcoord = vec2(
-    Vertices[offset + 6],
-    Vertices[offset + 7]
-  );
-
-  float mat = Vertices[offset + 8];
-  v.material = *(int*)&mat;
-
-  return v;
-}
+// binding 4
+[[using spirv: buffer, readonly, binding(binding_vertices)]]
+vertex_t Vertices[];
 
 // binding 5
 [[using spirv: buffer, readonly, binding(binding_indices)]]
@@ -403,15 +378,15 @@ void rchit_triangle() {
   // Vertex data is stored in consecutive locatoins.
   uvec2 offset = Offsets[glray_InstanceCustomIndex];
   uint index = offset.x + 3 * glray_PrimitiveID;
-  vertex_t v0 = UnpackVertex(Indices[index + 0] + offset.y);
-  vertex_t v1 = UnpackVertex(Indices[index + 1] + offset.y);
-  vertex_t v2 = UnpackVertex(Indices[index + 2] + offset.y);
+  vertex_t v0 = Vertices[Indices[index + 0] + offset.y];
+  vertex_t v1 = Vertices[Indices[index + 1] + offset.y];
+  vertex_t v2 = Vertices[Indices[index + 2] + offset.y];
 
   material_t material = Materials[v0.material];
 
   vec3 barycentric(1 - TriangleHit.x - TriangleHit.y, TriangleHit);
   vec3 normal = normalize(mat3(v0.normal, v1.normal, v2.normal) * barycentric);
-  vec2 texcoord = mat3x2(v0.texcoord, v1.texcoord, v2.texcoord) * barycentric;
+  vec2 texcoord = mat3x2(v0.u, v0.v, v1.u, v1.v, v2.u, v2.v) * barycentric;
 
   rayPayloadIn = Scatter(material, glray_WorldRayDirection, normal, 
     texcoord, glray_HitT, rayPayloadIn.RandomSeed);
@@ -437,7 +412,7 @@ void rchit_sphere() {
   // Find vertex data for this procedural item.
   uvec2 offset = Offsets[glray_InstanceCustomIndex];
   int index = Indices[offset.x] + offset.y;
-  vertex_t v0 = UnpackVertex(index);
+  vertex_t v0 = Vertices[index];
   material_t material = Materials[v0.material];
 
   vec4 sphere = Spheres[glray_InstanceCustomIndex];
