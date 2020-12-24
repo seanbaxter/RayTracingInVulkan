@@ -196,7 +196,7 @@ void rgen_main() {
       }
 
       // Intersect the ray against the acceleration structure.
-      glray_Trace(AS, glray_FlagsOpaque, 0xff, 0, 0, 0, origin.xyz, tMin, 
+      glray_Trace(AS, gl_RayFlagsOpaque, 0xff, 0, 0, 0, origin.xyz, tMin, 
         dir.xyz, tMax, 0);
 
       vec3 hit_color = rayPayload.ColorAndDistance.rgb;
@@ -455,7 +455,7 @@ void rint_sphere() {
   bool b2 = tMin <= t2 && t2 < tMax;
   if(discriminant >= 0 && (b1 || b2)) {
     SphereHit = sphere;
-    glray_reportIntersection(b1 ? t1 : t2, 0);
+    gl_reportIntersection(b1 ? t1 : t2, 0);
   }
 }
 
