@@ -35,11 +35,11 @@ struct material_t {
 
 // Common utilities.
 template<auto index, typename type_t = @enum_type(index)> 
-[[using spirv: in, location((size_t)index)]]
+[[spirv::in((size_t)index)]]
 type_t shader_in;
 
 template<auto index, typename type_t = @enum_type(index)> 
-[[using spirv: out, location((size_t)index)]]
+[[spirv::out((size_t)index)]]
 type_t shader_out;
 
 // Binding slots
@@ -50,15 +50,15 @@ enum binding_t {
 };
 
 // binding 0
-[[using spirv: uniform, binding(binding_ubo)]]
+[[spirv::uniform(binding_ubo)]]
 UniformBufferObject ubo;
 
 // binding 1
-[[using spirv: buffer, readonly, binding(binding_materials)]]
+[[using spirv: buffer(binding_materials), readonly]]
 material_t Materials[];
 
 // binding 2
-[[using spirv: uniform, binding(binding_samplers)]]
+[[using spirv: uniform(binding_samplers)]]
 sampler2D TextureSamplers[];
 
 // Declare the name, location and type for each shader attribute.
